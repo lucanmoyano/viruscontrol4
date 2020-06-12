@@ -1,0 +1,83 @@
+.container-resource{
+    justify-content: center;
+    margin: auto;
+    margin-top:0%;
+    /*display:flex;*/
+    width:100%;
+    overflow: hidden;
+    padding: 0px;
+    overflow:hidden;
+  }
+  .card-resource{
+    max-width: 13rem;
+    cursor:pointer;
+    padding-bottom: .5rem;
+    position: relative;
+    height: 18.531rem;
+    border:none;
+    background: none;
+  }
+
+  .bottom{
+    margin-top: 13px;
+    line-height: 12px;
+  }
+
+  .image {
+    width:100%;
+    position: absolute;
+    display: block;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    max-width: 70%!important;
+    max-height: none!important;
+  }
+
+  .image-container {
+    background: white;
+    position: relative;
+    height: 13rem;
+    width: 100%;
+    box-shadow: 0 3px 10px 0 rgba(0,0,0,.1);
+    //border: 1px solid #e7ebf3;
+    border-radius:8px;
+    /*border-bottom: 1px solid rgba(var(--b6a,219,219,219),1);*/
+    transition: 300ms;
+  }
+
+  .image-container:hover{
+    opacity: 0.7;
+}
+
+ .stock{
+   position: absolute;
+   bottom: 0;
+   right: 0;
+ }
+
+  .filtro-container-r{
+    width:100%;
+    height:100%;
+    margin-top: 40%;
+    overflow: auto;
+  }
+
+  .filtro-r{
+    width: 80%;
+    margin-top: 9%;
+    padding-top: 6%;
+    float: right;
+    padding-right: 12%;
+    overflow: auto;
+    height:100%;
+  }
+
+  .right-res{
+    width:70%;
+    margin-left:3%;
+    margin-right:2%;
+    position: relative;
+    float: right;
+    right: 0;
+  }

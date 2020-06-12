@@ -1,0 +1,33 @@
+.container-test{
+    width:70%;
+    margin:auto;
+    background-color: white;
+    border: 1px solid rgba(var(--b6a,219,219,219),1);
+    padding: 2.1rem;
+    /*max-width:900px;*/
+}
+
+.infopacient{
+    width:100%;
+    height:500px;
+    display:flex
+}
+
+.info-pacient-l{
+    width:50%
+}  
+
+.info-pacient-r{
+    width:50%
+}
+
+.listExam{  
+    margin:auto;
+    margin-top: 6%;
+    width:100%
+}
+
+.image{
+    width:14px;
+    height:14px
+}
