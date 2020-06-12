@@ -194,7 +194,7 @@ export default {
         background-color: white;
         border: 1px solid rgba(var(--b6a,219,219,219),1);
         padding: 2.1rem;
-        padding-top:5%;
+        padding-top:3%;
         margin-bottom:10%;
     }
     .head-search{
