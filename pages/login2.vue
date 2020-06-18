@@ -7,7 +7,6 @@
                 class="btn-login"
                 @click="handleClickFace"
                 :loading="loadingFace"
-                color="pinterest"
                 block
                 flat
             >
@@ -23,7 +22,6 @@
                 class="btn-login"
                 @click="handleClickFace"
                 :loading="loadingFace"
-                color="facebook"
                 block
                 flat
             >
@@ -42,6 +40,7 @@
 <script>
 import icons from '@/components/icons';
  export default {
+      layout:'inicio',
       data:() => ({
         sending: false,
         success: false,
@@ -83,13 +82,13 @@ import icons from '@/components/icons';
     }
 
     .card-login{
-        width:500px;
-        padding:2em;
+        width:300px;
+        padding:8em 2em;
         margin:auto;
         display:grid;
         justify-content: center;
-        background-color: var(--div-color);
-        border-radius: 0px 15px 15px 15px;
+        background-color: var(--div-color-op);
+        border-radius: 0px 20px 20px 20px;
         h2{
             margin:auto;
             padding-bottom:1em;

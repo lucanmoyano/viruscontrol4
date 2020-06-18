@@ -8,24 +8,7 @@
   </div>
 
   <div class="p-container">
-
-        
-            <!--<vs-input v-model="search" border placeholder="Buscar"  autocomplete="off"/>-->
-        
-    
-    <!--<div class="vs-table__header" style="display:flex" id="search-in">
-    <div style="width:80%">
-        <h3>Lista de pacientes</h3>
-    </div>-->
-       <!-- <vs-input v-model="search"  placeholder="Buscar" autocomplete="off" style="width:200px;"
-        >
-        <template #icon>
-          <i class='bx bx-user'></i>
-        </template>
-        </vs-input>-->
-      <!--</div>-->
-
-      <vs-select placeholder="Select" v-model="value" class="vs-table__header" id="patient-list">
+      <vs-select @change="filtroLista" placeholder="Select" v-model="value" class="vs-table__header" id="patient-list">
         <vs-option label="Lista de visitas pendientes" value="1">
           Lista de visitas pendientes
         </vs-option>
@@ -35,16 +18,16 @@
       </vs-select>
     
     <!--lista de pacientes-->
-    <div class="p-list">
+    <div class="p-list" v-for="(u, index) in pacientes" :key="index" > 
         <div class="p-list-img">
             <vs-avatar size="60">
-            <img :src="img" alt="">
+            <img :src="u.photo" alt="">
             </vs-avatar>
         </div>
         <div class="p-list-container">
         <div class="p-list-detail">
-            <p>Nombre</p>
-            <p>Fecha:</p>
+            <p>{{u.name}}</p>
+            <p>{{u.date}} - {{u.hour}} </p>
         </div>
         <div class="p-list-check">
             <vs-checkbox success v-model="check" @change="active2=true">
@@ -85,12 +68,18 @@
 
 <script>
 import icons from '@/components/icons';
+import data from '@/shared/rest'
+import axios from 'axios'
 
 export default {
   data(){
     return {
+        link1:data.patientList,
+        pacientes:[],
+
         value:'1',
         search:'',
+
         popupActivo:false,
         back:icons.Back,
         check:false,
@@ -104,6 +93,40 @@ export default {
     }
     },
     methods:{
+        async pendientList(){
+          const data = await axios.get(this.link1).then(response => {
+            this.pacientes = response.data.users;
+            })
+            .catch(function (error) {
+                
+            });
+        },
+        async finList(){
+          const data = await axios.get(this.link1).then(response => {
+            this.pacientes = response.data.users;
+            })
+            .catch(function (error) {              
+            });
+
+        }, 
+        async filtroLista(){
+          const loading = this.$vs.loading({type: 'scale',color: 'rgb(51,178,122)'})
+          if(this.value==1){
+            try{
+              await this.pendientList();
+            }finally{
+              loading.close();
+              }
+          }
+          else{
+            try{
+              await this.finList();
+            }
+            finally{
+              loading.close();
+            }
+          }
+        },
         endVisit(){
             const noti = this.$vs.notification({
             flat: true,
@@ -118,6 +141,14 @@ export default {
             this.check=false;
             this.active2=false;
         }
+    },
+    async mounted(){
+      const loading = this.$vs.loading({type: 'scale',color: 'rgb(51,178,122)'})
+      try{
+        await this.pendientList();
+      }finally{
+        loading.close();
+      }
     }
   
 }
@@ -138,7 +169,7 @@ export default {
         border: 1px solid rgba(var(--b6a,219,219,219),1);
         padding: 2.1rem;
         padding-top:5%;
-        height: 100vh;
+        min-height: 100vh;
   }
 
   .p-container{
@@ -216,7 +247,7 @@ export default {
             /*position: absolute;
             top: 0;
             bottom: 0;*/
-            height: 100vh;
+            min-height: 100vh;
         }
         
         .p-header{

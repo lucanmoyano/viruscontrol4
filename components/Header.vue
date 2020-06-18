@@ -14,7 +14,10 @@
                 <i v-if="active1===true" class='bx bxs-home-heart' ></i>
                 <i v-else class='bx bx-home-heart' ></i>
             </vs-button>
-        
+
+
+        <div v-if="userType=='citizen'">
+            <!-- Citizen -->
              <vs-button
                 icon
                 transparent
@@ -48,6 +51,30 @@
             >
                 <i class='bx bx-store-alt'></i>
             </vs-button>
+        </div>
+
+
+        <div v-if="userType=='doctor'" style="display:flex">
+            <!-- Doctor -->
+             <vs-button
+                icon
+                transparent
+                class="boton"
+                @click="PatientList"
+            >
+                <i class='bx bxs-calendar-plus'></i>
+            </vs-button>
+
+             <vs-button
+                icon
+                transparent
+                class="boton"
+                @click="ExamRequest"
+            >
+                <i class='bx bxs-vial'></i>
+            </vs-button>
+        </div>
+            
 
         </div>
         <div id="end">
@@ -66,6 +93,7 @@
         <i class='bx bxs-bell' ></i>
       </vs-button>
 
+
             
         </div>
     </div>
@@ -76,6 +104,7 @@
 
 export default {
     data:()=>({
+        userType:'doctor',
         active1:true,
         active2:false,
         active3:false,
@@ -86,16 +115,25 @@ export default {
         }
     }),
     methods:{
+        
         Home() {
             $nuxt.$router.push({ path: `/home` });
         },
+        /* Ciudadano */
         Resources(){
             $nuxt.$router.push({ path: `/resources` });
         },
         ExamResult(){
             $nuxt.$router.push({ path: `/citizen/exams/result` });
-        }
+        },
 
+        /* Medico */
+        PatientList(){
+            $nuxt.$router.push({ path: `/doctor/patient/list` });
+        },
+        ExamRequest(){
+            $nuxt.$router.push({ path: `/doctor/exams/request` });
+        }
     }
 
     }
@@ -138,7 +176,7 @@ export default {
                padding: 0px 21px !important;
             }
             .vs-button--icon i{
-                font-size: 2.15rem !important;
+                font-size: 1.8rem !important;
             }
             .vs-button--transparent{
                 margin-bottom: 0px;
@@ -146,7 +184,7 @@ export default {
                 border-bottom-right-radius:0px;
             }
             .active {
-                border-bottom: 2px solid green !important;
+                border-bottom: 2px solid var(--front-color) !important;
             }
             
         }
