@@ -1,6 +1,6 @@
 <template>
     <div id="container">
-        <div id="start">
+        <div id="start" @click="Home">
             <img src="@/assets/logo/Logo.svg" alt="viruscontrol" id="logo">
         </div>
         <div id="center">
@@ -82,7 +82,7 @@
         transparent
         class="avatar-boton"
       >
-        <img :src="img" id="avatar"> {{user.name}}
+        <img :src="user.photo" id="avatar"> <p style="font-size: 12px;">{{user.name}}</p>
       </vs-button>
 
       <vs-button
@@ -109,13 +109,13 @@ export default {
         active2:false,
         active3:false,
         active4:false,
-        img:'https://www.xtrafondos.com/wallpapers/naruto-uzumaki-3623.jpg',
-        user:{
-            name:'Lucas'
-        }
     }),
+    computed: {
+      user() {
+        return this.$store.state.user.loggedUser;
+      }
+    },
     methods:{
-        
         Home() {
             $nuxt.$router.push({ path: `/home` });
         },
@@ -133,7 +133,18 @@ export default {
         },
         ExamRequest(){
             $nuxt.$router.push({ path: `/doctor/exams/request` });
-        }
+        },
+        navigateEditAccount() {
+        $nuxt.$router.push({ path: `/account/edit` });
+      },
+      logout() {
+        this.$notify({
+          title: 'Notificación',
+          message: `Se cerró la sesión de ${this.user.name}`,
+          position: 'bottom-right'
+        });
+        this.$store.commit('user/deleteUser');
+      }
     }
 
     }
