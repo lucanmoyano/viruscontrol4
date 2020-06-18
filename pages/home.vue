@@ -2,7 +2,7 @@
     <div class="general-container">
       <div class="container">
 
-        <div class="card-container" v-if="user">
+        <div class="card-container" v-if="user!==null">
           <div class="card-item">
             <div class="card-item-container">
               <img :src="microscope">
@@ -51,18 +51,17 @@
         microscope: icons.Microscope,
         folder: icons.Folder,
         wifi: icons.Wifi,
-        streetMap: icons.StreetMap,
-        user:true
+        streetMap: icons.StreetMap
       };
     },
     computed: {
-      /*user() {
+      user() {
         return this.$store.state.user.loggedUser;
-      }*/
+      }
     },
     methods: {
       navigateToAccount() {
-        $nuxt.$router.push({path: `/account/edit`});
+        $nuxt.$router.push({path: `/account/profile`});
       }
     }
   }

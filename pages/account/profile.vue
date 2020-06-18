@@ -8,7 +8,7 @@
         </div>
 
 
-        <div v-if="user!=null">
+        <div v-if="user!==null && user!=false">
                  <div class="content">
                     <div class="profile-info-header">
                         <vs-avatar size="100" badge badge-color="success">
@@ -16,11 +16,11 @@
                         </vs-avatar>
                       <div class="profile-info">
                         <div class="profile-info-header-title">
-                          {{ user.name }}
+                          {{user.name}}
                         </div>
                         <div class="profile-info-header-subtitle">
                           <div>{{user.email}}</div>
-                          <div>{{ user.idDocument }}</div>
+                          <div>{{user.idDocument}}</div>
                           <div style="font-weight: bold">{{ userType }}</div>
                         </div>
                       </div>
@@ -94,6 +94,7 @@ import firebase from "../../plugins/fireinit";
 export default {
     firestore() {
       const loggedUser = this.$store.state.user.loggedUser;
+      console.log(getUserFromDatabase(loggedUser.email))
       return {
         user: getUserFromDatabase(loggedUser.email)
       }

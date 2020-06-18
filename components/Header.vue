@@ -16,7 +16,7 @@
             </vs-button>
 
        
-        <div v-if="user!==false && user!==null &&  typeof userType!='undefined' && userType!=null && userType=='Ciudadano'"  style="display:flex"> 
+        <div v-if="usuario!==false && usuario!==null &&  typeof userType!='undefined' && userType!=null && userType=='Ciudadano'"  style="display:flex"> 
             <!-- Citizen -->
              <vs-button
                 icon
@@ -53,8 +53,7 @@
             </vs-button>
         </div>
 
-
-        <div v-if="user!==false && user!==null && typeof userType!='undefined' && userType!=null && userType=='Doctor'" style="display:flex">
+        <div v-if="usuario!==false && usuario!==null && typeof userType!='undefined' && userType!=null && userType=='Doctor'" style="display:flex">
             <!-- Doctor -->
              <vs-button
                 icon
@@ -83,7 +82,7 @@
         class="avatar-boton"
         @click="navigateEditAccount"
       >
-        <img :src="user.photo" id="avatar"> <p style="font-size: 12px;">{{user.name}}</p>
+        <img :src="user.photo" id="avatar"> <p style="font-size: 12px;">{{ user.name }}</p>
       </vs-button>
 
       <vs-button
@@ -111,7 +110,7 @@ export default {
     firestore() {
         const loggedUser = this.$store.state.user.loggedUser;
         return {
-        user: getUserFromDatabase(loggedUser.email)
+        usuario: getUserFromDatabase(loggedUser.email)
     }
     },
     data:()=>({
@@ -120,14 +119,15 @@ export default {
         active2:false,
         active3:false,
         active4:false,
-        user:null
+        usuario:null
     }),
     computed: {
-      /*user() {
+      user() {
+          console.log(this.$store.state.user.loggedUser)
         return this.$store.state.user.loggedUser;
-      },*/
+      },
       userType() {
-        return this.user.userType?.showName ?? "-";
+        return this.usuario.userType?.showName ?? "-";
       }
     },
     methods:{
@@ -170,9 +170,9 @@ export default {
         const loggedUser = this.$store.state.user.loggedUser;
         if (loggedUser) {
           const savedUser = await getUserFromDatabase(loggedUser.email);
-          this.user = savedUser;
+          this.usuario = savedUser;
         } else {
-          this.user = false;
+          this.usuario = false;
         }
       } finally {
         //loading.close();
