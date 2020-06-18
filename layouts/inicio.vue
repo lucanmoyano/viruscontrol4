@@ -9,7 +9,7 @@
 @import '@/shared/variables.css';
 body{
     font-family: 'Poppins', sans-serif;
-    background: url("~assets/images/pattern.png");
+    /*background: url("~assets/images/pattern.png");*/
     background-color: var(--front-color-op);
 
 }
