@@ -15,8 +15,8 @@
                 <i v-else class='bx bx-home-heart' ></i>
             </vs-button>
 
-
-        <div v-if="userType=='citizen'">
+       
+        <div v-if="user!==false && user!==null &&  typeof userType!='undefined' && userType!=null && userType=='Ciudadano'"  style="display:flex"> 
             <!-- Citizen -->
              <vs-button
                 icon
@@ -54,7 +54,7 @@
         </div>
 
 
-        <div v-if="userType=='doctor'" style="display:flex">
+        <div v-if="user!==false && user!==null && typeof userType!='undefined' && userType!=null && userType=='Doctor'" style="display:flex">
             <!-- Doctor -->
              <vs-button
                 icon
@@ -77,10 +77,11 @@
             
 
         </div>
-        <div id="end">
+        <div id="end" v-if="user!==null && user!==false">
         <vs-button
         transparent
         class="avatar-boton"
+        @click="navigateEditAccount"
       >
         <img :src="user.photo" id="avatar"> <p style="font-size: 12px;">{{user.name}}</p>
       </vs-button>
@@ -92,27 +93,41 @@
       >
         <i class='bx bxs-bell' ></i>
       </vs-button>
-
-
-            
         </div>
+
+        <div v-else id="login-container"> 
+            <div @click="navigateLogin">Iniciar sesión</div>
+        </div>
+
     </div>
 </template>
 
 
 <script>
+import { getUserFromDatabase, saveUser } from "@/shared/user";
+import firebase from "@/plugins/fireinit";
 
 export default {
+    firestore() {
+        const loggedUser = this.$store.state.user.loggedUser;
+        return {
+        user: getUserFromDatabase(loggedUser.email)
+    }
+    },
     data:()=>({
-        userType:'doctor',
+       // userType:'doctor',
         active1:true,
         active2:false,
         active3:false,
         active4:false,
+        user:null
     }),
     computed: {
-      user() {
+      /*user() {
         return this.$store.state.user.loggedUser;
+      },*/
+      userType() {
+        return this.user.userType?.showName ?? "-";
       }
     },
     methods:{
@@ -135,7 +150,10 @@ export default {
             $nuxt.$router.push({ path: `/doctor/exams/request` });
         },
         navigateEditAccount() {
-        $nuxt.$router.push({ path: `/account/edit` });
+        $nuxt.$router.push({ path: `/account/profile` });
+        },
+        navigateLogin() {
+        $nuxt.$router.push({ path: `/login` });
       },
       logout() {
         this.$notify({
@@ -144,6 +162,20 @@ export default {
           position: 'bottom-right'
         });
         this.$store.commit('user/deleteUser');
+      }
+    },
+    async mounted(){
+      //const loading = this.$vs.loading({type: 'scale',color: 'rgb(51,178,122)'})
+      try {
+        const loggedUser = this.$store.state.user.loggedUser;
+        if (loggedUser) {
+          const savedUser = await getUserFromDatabase(loggedUser.email);
+          this.user = savedUser;
+        } else {
+          this.user = false;
+        }
+      } finally {
+        //loading.close();
       }
     }
 
@@ -217,6 +249,14 @@ export default {
             .vs-button--icon i{
                 font-size: 1.45rem !important;
             }
+        }
+        #login-container{
+            width:20%;
+            margin: auto;
+            padding-top:.2rem;
+            display:flex;
+            cursor: pointer;
+            color: var(--front-color);
         }
     }
 </style>

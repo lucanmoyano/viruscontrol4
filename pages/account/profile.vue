@@ -1,17 +1,16 @@
 <template>
     <div class="container-profile">
         <div class="p-header">
-            <div class="p-container-back">
+            <!--<div class="p-container-back">
                 <img :src=back class="p-back">
-            </div> 
+            </div>-->
             <h2 class="p-title">Editar perfil</h2>
         </div>
 
 
-        <div v-if="user">
+        <div v-if="user!=null">
                  <div class="content">
                     <div class="profile-info-header">
-                     <!-- <img id="profile-pic" :src="user.photo" />-->
                         <vs-avatar size="100" badge badge-color="success">
                             <img id="profile-pic" :src="user.photo">
                         </vs-avatar>
@@ -41,7 +40,7 @@
                         </template>
                     </vs-input>
 
-                    <vs-input v-model="user.phone" placeholder="Dirección">
+                    <vs-input v-model="user.address" placeholder="Dirección">
                         <template #icon>
                             <i class='bx bxs-home-smile' ></i>
                         </template>
@@ -79,7 +78,7 @@
 
                   </div>
                 </div>
-               <div v-if="user === false">
+               <div v-else>
                   <h3>No hay usuario</h3>
                 </div>
 
@@ -89,27 +88,50 @@
 
 <script>
 import icons from '@/components/icons';
+import { getUserFromDatabase, saveUser } from "../../shared/user";
+import firebase from "../../plugins/fireinit";
+
 export default {
+    firestore() {
+      const loggedUser = this.$store.state.user.loggedUser;
+      return {
+        user: getUserFromDatabase(loggedUser.email)
+      }
+    },
     data:()=>({
         back:icons.Back,
-        userType: 'Ciudadano',
         genderOptions:["Hombre", "Mujer", "Otro"],
-        user:{
-            photo:'https://www.xtrafondos.com/wallpapers/naruto-uzumaki-3623.jpg',
-            name:'Lucas Moyano',
-            email:'lucanmoyano@gmail.com',
-            idDocument:'',
-            phone:'',
-            address:'',
-            gender:'',
-            birthDare:''
-
-        }
+        user:null
     }),
+    computed: {
+      userType() {
+        return this.user.userType?.showName ?? "-";
+      }
+    },
     methods:{
-        updateUser(){
-            console.log('OK')
+        async updateUser(){
+          const loading = this.$vs.loading({type: 'scale',color: 'rgb(51,178,122)'})
+          try {
+            console.log('Guardar usuarioo');
+            await saveUser(this.user);
+          } finally {
+            loading.close();
+          }
         }
+    },
+    async mounted(){
+      const loading = this.$vs.loading({type: 'scale',color: 'rgb(51,178,122)'})
+      try {
+        const loggedUser = this.$store.state.user.loggedUser;
+        if (loggedUser) {
+          const savedUser = await getUserFromDatabase(loggedUser.email);
+          this.user = savedUser;
+        } else {
+          this.user = false;
+        }
+      } finally {
+        loading.close();
+      }
     }
 }
 </script>

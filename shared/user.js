@@ -6,12 +6,7 @@ import 'firebase/database';
 import { mapGetters } from "vuex";
 
 
-async function getUserFromDatabase1(id) { 
-  console.log('entre a funcion')
-  const userDbRef = await firebase.firestore().collection('user').doc(id).get(); 
-  console.log(userDbRef)
-  console.log('sali a funcion')
-}
+
 
 
 const userExists = (userId) => {
@@ -29,13 +24,9 @@ export const getUserDataFromFirebase = (user) => {
 }
 
 export const getUserFromDatabase = async (id) => {
-  getUserFromDatabase1(id);
   const userDbRef = firebase.firestore().collection('user').doc(id);
   try {
-    console.log(userDbRef.get());
     const doc = await userDbRef.get();
-    console.log('hola');
-    console.log(doc.data());
     return doc.data();
     
   } catch (e) {
